@@ -4,6 +4,14 @@ from pathlib import Path
 import shutil
 
 
+## CONSTANTS
+
+# Noms de fitxers de sistema (macOS/Windows) que mai volem processar com a fotos/vídeos
+JUNK_FILENAMES = {"@eaDir", ".DS_Store", "Thumbs.db", "desktop.ini"}
+
+
+## FUNCTIONS
+
 def files_list(folder_name):
     # Aquesta funció retorna els fitxers continguts en una carpeta en concret
     files = []
@@ -51,6 +59,28 @@ def is_almost_empty_folder(folder_path, last_files):
             return True
         else:
             return False
+
+
+def delete_junk_files(folder):
+    # Elimina fitxers de sistema no desitjats (p.ex. .DS_Store) d'una carpeta
+    try:
+        initial_time = datetime.datetime.now()
+        print(f"\t + [{initial_time}] Deleting junk files from {folder}...")
+        num_deleted = 0
+
+        if os.path.isdir(folder):
+            for f in files_list(folder):
+                if os.path.basename(f) in JUNK_FILENAMES:
+                    os.remove(f)
+                    num_deleted += 1
+
+    except Exception as e:
+        # General exception handling
+        print(f"An error occurred: {e}")
+
+    finally:
+        print(f"\t |-- Execution complete in {datetime.datetime.now()-initial_time} ms.")
+        print(f"\t |-- {num_deleted} junk files deleted")
 
 def delete_folder_if_empty(folder, silent_mode=False):
     """

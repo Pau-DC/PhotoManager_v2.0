@@ -38,12 +38,17 @@ try:
 
 ################## REVISAR AQUESTA PART
     # Comprovem si la carpeta masters està buida i, si ho està, finalitzem procés
-    if is_empty_folder(masters_folder) or is_almost_empty_folder(masters_folder,["@eaDir","thumbs.db", "desktop.ini"]):
+    if is_empty_folder(masters_folder) or is_almost_empty_folder(masters_folder,list(JUNK_FILENAMES)):
         print(f"{masters_folder} is an empty folder")
         sys.exit(1)
     else:
-        print(f"The folder {masters_folder} is not an empty folder.\n is_empty_folder={is_empty_folder(masters_folder)}\nis_almost_empty_folder={is_almost_empty_folder(masters_folder,['@eaDir','thumbs.db', 'desktop.ini'])}")
+        print(f"The folder {masters_folder} is not an empty folder.\n is_empty_folder={is_empty_folder(masters_folder)}\nis_almost_empty_folder={is_almost_empty_folder(masters_folder,list(JUNK_FILENAMES))}")
 ################## REVISAR AQUESTA PART
+
+    # Eliminem fitxers de sistema (.DS_Store, Thumbs.db...) abans de processar res
+    delete_junk_files(masters_folder)
+    if edits_folder != "":
+        delete_junk_files(edits_folder)
 
     # Processem les fotografies obtingudes de l'iphone
     process_photos_from_iphone(masters_folder, edits_folder)
