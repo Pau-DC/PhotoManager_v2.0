@@ -85,7 +85,6 @@ def delete_folder_if_empty(folder, silent_mode=False):
             if item.name in ignored_names:  
                 try:
                     if item.is_dir():
-                        #os.rmdir(item) Canvi de funció a proposta de Claude (update fet el 9/8/2026) per tal que borri correctament i recursivament @eadir
                         shutil.rmtree(item)
                     else:
 						# Per si es un arxiu
